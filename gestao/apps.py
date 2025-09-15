@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class YuriAguiarConfig(AppConfig):
+class GestaoConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'yuri_aguiar'
+    name = 'gestao'
