@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF--8">
+    <title>Seu Painel de Organização</title>
+    <style>
+        body { font-family: sans-serif; }
+        .gamificacao { background-color: #eee; padding: 10px; margin-bottom: 20px; border-radius: 8px; }
+        .comodo { border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; border-radius: 8px; }
+        .tarefa { display: flex; justify-content: space-between; align-items: center; padding: 5px; border-bottom: 1px solid #eee; }
+    </style>
+</head>
+<body>
+    <h1>Painel de {{ request.user.username }}</h1>
+
+    <div class="gamificacao">
+        <h3>Seu Progresso</h3>
+        <p><strong>Nível:</strong> {{ perfil.nivel }}</p>
+        <p><strong>Pontos:</strong> {{ perfil.pontos }}</p>
+        {% if perfil.streak_atual > 0 %}
+            <p><strong>Sequência:</strong> 🔥 {{ perfil.streak_atual }} dias</p>
+        {% endif %}
+    </div>
+
+    <h2>Seus Cômodos e Tarefas</h2>
+
+    {% for comodo in comodos %}
+        <div class="comodo">
+            <h3>{{ comodo.nome }}</h3>
+            {% for tarefa in comodo.tarefas.all %}
+                <div class="tarefa">
+                    <span>{{ tarefa.titulo }} ({{ tarefa.frequencia }})</span>
+                    <form action="{% url 'concluir_tarefa' tarefa.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Concluir</button>
+                    </form>
+                </div>
+            {% empty %}
+                <p>Nenhuma tarefa cadastrada para este cômodo.</p>
+            {% endfor %}
+        </div>
+    {% empty %}
+        <p>Você ainda não cadastrou nenhum cômodo. Comece pelo <a href="/admin/">Painel Admin</a>!</p>
+    {% endfor %}
+</body>
+</html>
