@@ -4,12 +4,99 @@
     <meta charset="UTF-8">
     <title>Login</title>
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5; }
-        .form-container { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 350px; }
-        form p { display: flex; flex-direction: column; }
-        input { padding: 8px; margin-top: 5px; border-radius: 4px; border: 1px solid #ccc; }
-        button { background-color: #28a745; color: white; padding: 10px; border: none; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 1rem; }
-        .errorlist { list-style-type: none; padding: 0; color: red; font-size: 0.9em; }
+        body { 
+            font-family: sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0;
+            background: linear-gradient(to bottom, #abdfe1 50%, #f0f2f5 50%);
+        }
+
+        .form-container { 
+            background: white; 
+            padding: 2rem; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+            width: 350px; 
+            position: relative;
+            z-index: 1;
+        }
+
+        h2 { 
+            text-align: center; 
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        form p { 
+            display: flex; 
+            flex-direction: column; 
+            margin-bottom: 1rem;
+        }
+
+        label { 
+            font-weight: bold; 
+            margin-bottom: 5px; 
+        }
+
+        input { 
+            padding: 10px; 
+            border-radius: 4px; 
+            border: 1px solid #ccc; 
+            font-size: 1rem;
+        }
+
+        button { 
+            background-color: #abdfe1; 
+            color: black; 
+            padding: 10px; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            width: 100%; 
+            margin-top: 1rem; 
+            font-size: 1rem;
+            transition: background 0.3s ease, transform 0.1s ease;
+        }
+
+        button:hover { 
+            background-color: #7ac4c7;
+            color: black; 
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .errorlist, span { 
+            color: red; 
+            font-size: 0.85em; 
+            margin-top: 5px;
+        }
+
+        .register-link { 
+            text-align: center; 
+            margin-top: 1rem; 
+            font-size: 0.9rem;
+        }
+
+        .register-link a { 
+            color: #007bff; 
+            text-decoration: none; 
+            font-weight: bold;
+        }
+
+        .register-link a:hover { 
+            text-decoration: underline; 
+        }
+
+        @media (max-width: 400px) {
+            .form-container {
+                width: 90%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -17,10 +104,27 @@
         <h2>Acesse sua Conta</h2>
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+
+            <p>
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                {% for error in form.username.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </p>
+
+            <p>
+                {{ form.password.label_tag }}
+                {{ form.password }}
+                {% for error in form.password.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </p>
+
             <button type="submit">Entrar</button>
         </form>
-        <p style="text-align: center; margin-top: 1rem;">
+
+        <p class="register-link">
             Não tem uma conta? <a href="{% url 'cadastro' %}">Cadastre-se</a>
         </p>
     </div>

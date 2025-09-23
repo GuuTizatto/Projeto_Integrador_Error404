@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.contrib.auth.forms import UserCreationForm
 from .models import Comodo, Tarefa, HistoricoExecucao
+from .forms import CustomUserCreationForm
 
 # --- VIEW DE CADASTRO ---
 def pagina_cadastro(request):
@@ -85,3 +86,14 @@ def concluir_tarefa(request, tarefa_id):
         tarefa.save()
 
     return redirect('painel_usuario')
+
+def register(request):
+    if request.method == "POST":
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("login")
+    else:
+        form = CustomUserCreationForm()
+    return render(request, "register.html", {"form": form})
+    
