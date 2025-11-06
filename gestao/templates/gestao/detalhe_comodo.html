@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ comodo.nome }} - Detalhes</title>
+    <link rel="stylesheet" href="{% static 'gestao/css/painel.css' %}"> <style>
+        .page-container { display: flex; }
+        .sidebar { flex: 0 0 120px; padding: 2rem 1rem; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+        .sidebar .comodo-card { width: 80px; height: 80px; padding: 1rem; }
+        .sidebar .comodo-card img { max-width: 40px; margin: 0; }
+        .sidebar .comodo-card.active { border-color: #f9b233; background-color: #fffbeb; }
+
+        .content-area { flex-grow: 1; background-color: #fff; margin: 2rem; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { text-align: left; padding: 12px 15px; border-bottom: 1px solid #eee; }
+        th { color: #aaa; text-transform: uppercase; font-size: 0.8em; letter-spacing: 1px; }
+        .actions form { display: inline; }
+        .actions button { background: none; border: none; cursor: pointer; font-size: 1.2rem; }
+        .btn-report { display: inline-block; margin-top: 2rem; padding: 10px 20px; background-color: #f0f0f0; border: 1px solid #ddd; border-radius: 20px; text-decoration: none; color: #555; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="user-profile">
+            <span class="welcome-message">Olá, {{ request.user.username }}!</span>
+            <div class="gamification-stats">
+                <div class="stat-item">Nível: {{ request.user.perfil.nivel }}</div>
+                <div class="stat-item">Pontos: {{ request.user.perfil.pontos }}</div>
+                {% if request.user.perfil.streak_atual > 0 %}
+                    <div class="stat-item">🔥 {{ request.user.perfil.streak_atual }}</div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'painel_usuario' %}">Painel Principal</a>
+            <a href="{% url 'logout' %}">Sair</a>
+        </div>
+    </header>
+
+    <div class="page-container">
+        <aside class="sidebar">
+            {% for c in comodos_sidebar %}
+                <a href="{% url 'detalhe_comodo' c.id %}" 
+                   class="comodo-card {% if c.id == comodo.id %}active{% endif %}">
+                    <img src="{% static 'gestao/icons/' %}{{ c.icone }}" alt="{{ c.nome }}">
+                </a>
+            {% endfor %}
+        </aside>
+
+        <main class="content-area">
+            <h2>Tarefas de: {{ comodo.nome }}</h2>
+            <hr style="border:0; border-top: 1px solid #eee; margin: 1rem 0 2rem 0;">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Atividade</th>
+                        <th>Quando Fazer</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tarefa in comodo.tarefas.all %}
+                    <tr>
+                        <td>{{ tarefa.titulo }}</td>
+                        <td>{{ tarefa.frequencia }}</td>
+                        <td>
+                            {% if tarefa.data_ultima_execucao %}
+                                Feito em: {{ tarefa.data_ultima_execucao|date:"d/m/Y" }}
+                            {% else %}
+                                Pendente
+                            {% endif %}
+                        </td>
+                        <td class="actions">
+                            <form action="{% url 'concluir_tarefa' tarefa.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" title="Marcar como concluída">✅</button>
+                            </form>
+                            <form action="{% url 'deletar_tarefa' tarefa.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" title="Deletar tarefa">🗑️</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">Nenhuma tarefa cadastrada para este cômodo.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="#" class="btn-report">IMPRIMIR RELATÓRIO</a>
+        </main>
+    </div>
+</body>
+</html>

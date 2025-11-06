@@ -8,6 +8,14 @@ from . import views
 urlpatterns = [
     # Nossas URLs existentes
     path('painel/', views.painel_usuario, name='painel_usuario'),
+
+
+    # --- NOVAS URLS ---
+    # Ex: /comodo/1/
+    path('comodo/<int:comodo_id>/', views.detalhe_comodo, name='detalhe_comodo'),
+    # Ex: /tarefa/5/deletar/
+    path('tarefa/<int:tarefa_id>/deletar/', views.deletar_tarefa, name='deletar_tarefa'),
+    
     path('tarefa/<int:tarefa_id>/concluir/', views.concluir_tarefa, name='concluir_tarefa'),
 
     # URLS DE CADASTRO E LOGIN

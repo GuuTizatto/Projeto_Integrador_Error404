@@ -1,0 +1,25 @@
+/* --- Reset Básico e Estilo Geral --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #cde4e2; color: #333; }
+
+        /* --- Barra de Navegação (Header) --- */
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .navbar .search-bar { flex-grow: 0.5; display: flex; }
+        .navbar .search-bar input { width: 100%; padding: 0.6rem; border: 1px solid #ddd; border-radius: 20px 0 0 20px; outline: none; }
+        .navbar .search-bar button { padding: 0.6rem 1rem; border: 1px solid #ddd; border-left: none; background-color: #f0f0f0; border-radius: 0 20px 20px 0; cursor: pointer; }
+        .navbar .nav-links a { margin-left: 1.5rem; text-decoration: none; color: #555; font-weight: 500; }
+        .navbar .btn-vip { background-color: #f9b233; color: #fff; padding: 0.7rem 1.5rem; border-radius: 20px; font-weight: bold; text-decoration: none; }
+
+        /* --- Estilos da Gamificação no Header --- */
+        .user-profile { display: flex; flex-direction: column; align-items: flex-start; }
+        .welcome-message { font-weight: bold; font-size: 1.5rem; margin-bottom: 5px; }
+        .gamification-stats { display: flex; align-items: center; gap: 15px; }
+        .stat-item { background-color: #e9f5f4; padding: 5px 10px; border-radius: 15px; font-size: 0.9rem; font-weight: 500; border: 1px solid #b6dadd; }
+
+        /* --- Conteúdo Principal (Grid de Cômodos) --- */
+        .main-content { padding: 3rem 2rem; }
+        .comodos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; max-width: 900px; margin: 0 auto; }
+        .comodo-card { background-color: #fff; border: 2px solid #b6dadd; border-radius: 15px; padding: 1.5rem; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; text-decoration: none; color: #333; transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; aspect-ratio: 1 / 1; }
+        .comodo-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+        .comodo-card img { max-width: 80px; margin-bottom: 1rem; }
+        .comodo-card span { font-weight: 600; font-size: 1.1rem; }
